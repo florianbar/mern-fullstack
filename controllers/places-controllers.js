@@ -7,7 +7,7 @@ const Place = require("../models/place");
 const User = require("../models/user");
 
 const getPlaceById = async (req, res, next) => {
-  const placeId = req.params.pid; // { pid: 'p1' }
+  const placeId = req.params.pid;
 
   let place;
   try {
