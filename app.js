@@ -28,7 +28,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://florianbar:wzOnPiYGDaNgVzdT@cluster0.pvm3scx.mongodb.net/places"
+    "mongodb+srv://florianbar:wzOnPiYGDaNgVzdT@cluster0.pvm3scx.mongodb.net/mern-stack"
   )
   .then(() => {
     app.listen(5000);
