@@ -30,11 +30,14 @@ export default function Home() {
         });
 
         const responseData = await response.json();
-        console.log("Response", responseData);
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        console.log(responseData);
         setIsLoading(false);
         // auth.login();
       } catch (err) {
-        console.log("Error", err);
+        console.log(err);
         setIsLoading(false);
         setError(err.message || "Something went wrong, please try again.");
       }
@@ -44,6 +47,9 @@ export default function Home() {
   return (
     <>
       {isLoading && <div>Loading</div>}
+      {error && (
+        <div className="text-red-800 font-bold bg-red-200 m-4 p-4">{error}</div>
+      )}
       <form method="POST" onSubmit={authSubmitHandler} className="p-4">
         <input
           type="text"
