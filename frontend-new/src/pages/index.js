@@ -17,31 +17,36 @@ export default function Home() {
 
     if (isLoginMode) {
       // send login request
-      sendRequest(
-        "http://localhost:5000/api/users/login",
-        "POST",
-        JSON.stringify({
-          email,
-          password,
-        }),
-        {
-          "Content-Type": "application/json",
-        }
-      );
+      try {
+        await sendRequest(
+          "http://localhost:5000/api/users/login",
+          "POST",
+          JSON.stringify({
+            email,
+            password,
+          }),
+          {
+            "Content-Type": "application/json",
+          }
+        );
+        // auth.login();
+      } catch (err) {}
     } else {
       // send signup request
-      sendRequest(
-        "http://localhost:5000/api/users/signup",
-        "POST",
-        JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-        {
-          "Content-Type": "application/json",
-        }
-      );
+      try {
+        await sendRequest(
+          "http://localhost:5000/api/users/signup",
+          "POST",
+          JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+          {
+            "Content-Type": "application/json",
+          }
+        );
+      } catch (err) {}
     }
   };
 

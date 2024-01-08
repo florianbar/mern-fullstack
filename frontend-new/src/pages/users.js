@@ -1,3 +1,5 @@
+import { httpClient } from "../utils/http";
+
 export default function Users({ users, errorMessage }) {
   return (
     <div className="p-4">
@@ -17,18 +19,10 @@ export default function Users({ users, errorMessage }) {
 
 export async function getServerSideProps() {
   let users = null;
-  let errorMessage = null;
 
-  try {
-    const response = await fetch("http://localhost:5000/api/users");
-    const responseData = await response.json();
-    if (!response.ok) {
-      throw new Error(responseData.message);
-    }
-    users = responseData.users;
-  } catch (err) {
-    errorMessage = err.message;
-  }
+  const { sendRequest, errorMessage } = httpClient();
+  const responseData = await sendRequest("http://localhost:5000/api/users");
+  users = responseData.users;
 
   return {
     props: {

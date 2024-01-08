@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,14 +30,16 @@ export const useHttpClient = () => {
           throw new Error(responseData.message);
         }
         setSuccessMessage(responseData.message);
+        setIsLoading(false);
         return responseData;
       } catch (err) {
         console.log(err);
         setErrorMessage(
           err.message || "Something went wrong, please try again."
         );
+        setIsLoading(false);
+        throw err;
       }
-      setIsLoading(false);
     },
     []
   );
