@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { useHttpClient } from "../hooks/http-hook";
+
 export default function Home() {
   const [isLoginMode, setIsLoginMode] = useState(false);
 
@@ -7,72 +9,39 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const { isLoading, successMessage, errorMessage, sendRequest, clearError } =
+    useHttpClient();
 
   const authSubmitHandler = async (event) => {
     event.preventDefault();
 
-    setIsLoading(true);
-    setErrorMessage(null);
-    setSuccessMessage(null);
-
     if (isLoginMode) {
       // send login request
-      try {
-        const response = await fetch("http://localhost:5000/api/users/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        });
-
-        const responseData = await response.json();
-        if (!response.ok) {
-          throw new Error(responseData.message);
+      sendRequest(
+        "http://localhost:5000/api/users/login",
+        "POST",
+        JSON.stringify({
+          email,
+          password,
+        }),
+        {
+          "Content-Type": "application/json",
         }
-        console.log(responseData);
-        setIsLoading(false);
-        setSuccessMessage("You've successfully logged in!");
-        // auth.login();
-      } catch (err) {
-        console.log(err);
-        setIsLoading(false);
-        setErrorMessage(
-          err.message || "Something went wrong, please try again."
-        );
-      }
+      );
     } else {
       // send signup request
-      try {
-        const response = await fetch("http://localhost:5000/api/users/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-          }),
-        });
-
-        const responseData = await response.json();
-        if (!response.ok) {
-          throw new Error(responseData.message);
+      sendRequest(
+        "http://localhost:5000/api/users/signup",
+        "POST",
+        JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+        {
+          "Content-Type": "application/json",
         }
-        console.log(responseData);
-        setIsLoading(false);
-        setSuccessMessage("You've successfully signed up!");
-        // auth.login();
-      } catch (err) {
-        console.log(err);
-        setIsLoading(false);
-        setErrorMessage(
-          err.message || "Something went wrong, please try again."
-        );
-      }
+      );
     }
   };
 
